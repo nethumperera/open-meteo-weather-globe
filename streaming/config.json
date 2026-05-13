@@ -37,8 +37,8 @@
     "jitter_minutes": 10
   },
   "output": {
-    "manifest_path": "../website/data/manifest.json",
-    "data_directory": "../website/data/streaming",
+    "manifest_path": "../docs/data/manifest.json",
+    "data_directory": "../docs/data/streaming",
     "format": "json",
     "grid_type": "regular_1degree"
   }

@@ -38,7 +38,7 @@ class OpenMeteoIngest:
         
         self.api_url = self.config['api']['base_url']
         self.variables = self.config['variables']['hourly']
-        self.output_dir = Path(self.config['output']['data_directory'])
+        self.output_dir = Path(self.config['output']['data_directory']).absolute()
         self.manifest_path = Path(self.config['output']['manifest_path'])
         self.grid_res = self.config['geographic_bounds']['grid_resolution_degrees']
         self.window_days = self.config['data_retention']['window_days']
@@ -219,7 +219,7 @@ class OpenMeteoIngest:
         logger.info("Starting daily rolling window update...")
         
         # Load current manifest
-        if not self.manifest_path.exists():
+        if not Path(self.manifest_path).exists():
             logger.warning("Manifest not found, performing full 7-day ingest instead")
             return self.ingest_7day_window()
         
