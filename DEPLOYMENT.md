@@ -1,75 +1,49 @@
 # Deployment and GitHub Pages Guide
 
-## Quick Start
+## 🎉 Quick Start
 
-The V2 project is now fully configured and pushed to GitHub. To activate GitHub Pages and go live:
+Your site is live and running!
 
-### Step 1: Enable GitHub Pages
+- **Home:** https://nethumperera.github.io/open-meteo-weather-globe/
+- **Globe:** https://nethumperera.github.io/open-meteo-weather-globe/pages/globe.html
 
-Visit: https://github.com/nethumperera/open-meteo-weather-globe/settings/pages
+## ⏰ Automated Hourly Updates
 
-**Configure:**
-- **Source:** Deploy from branch
-- **Branch:** `main`
-- **Folder:** `/ (website)` — Select the `website` folder
+GitHub Actions workflow **runs every hour automatically**:
 
-Click **Save**
-
-GitHub will deploy within 1-2 minutes.
-
-### Step 2: Verify Deployment
-
-After 1-2 minutes, your site will be live at:
-```
-https://nethumperera.github.io/open-meteo-weather-globe/
-```
-
-### Step 3: Access the Globe
-
-Once deployed, access the interactive globe at:
-```
-https://nethumperera.github.io/open-meteo-weather-globe/pages/globe.html
-```
-
-## What Happens Next
-
-### Daily Automated Updates
-
-The GitHub Actions workflow **`ingest-openmeteo.yml`** runs automatically:
-
-**Schedule:** 11 AM IST (5:30 AM UTC) with randomized ±10 minute jitter
+**Schedule:** Every hour at :00 UTC with ±10 minute random jitter
 
 **What it does:**
-1. Activates every day at 11:00 AM IST
+1. Activates hourly
 2. Applies random 0-10 minute delay (prevents API blocking)
-3. Fetches latest 24 hours of weather data from Open-Meteo free API
-4. Processes data into hourly grid files (~1° resolution, global)
-5. Updates `website/data/manifest.json` and hourly grid files
-6. Auto-commits changes to `main` branch
-7. GitHub Pages automatically redeploys
+3. Fetches latest hour of weather from Open-Meteo API
+4. Processes data into hourly grid file (~1° global resolution)
+5. Updates `docs/data/manifest.json`
+6. Auto-commits to GitHub → Pages redeploys
 
-**Result:** Your globe stays updated with the latest weather data 24/7
+**Result:** Fresh weather data every hour, 24/7! 🌍
 
-## Data Retention
+## 📊 Data Retention
 
-- **7-day rolling window:** Always maintains last 168 hours (7 days × 24 hours)
-- **Daily eviction:** Oldest 24-hour batch deleted each day
-- **Fresh data:** Newest 24 hours added from Open-Meteo API
+- **7-day rolling window:** Always 168 hours (7 days)
+- **Hourly updates:** One new hour each hour
+- **Auto-cleanup:** Oldest hour deleted when exceeding 168 files
 
-## Manual Testing (Optional)
-
-To test the ingest locally before relying on automation:
+## 🧪 Manual Testing (Optional)
 
 ```powershell
 cd C:\Users\HP\Documents\1 - Contracts\1 -  Research\V2\streaming
 .\run_ingest.ps1
 ```
 
-This will:
-- Fetch 7 days of data from Open-Meteo
-- Generate hourly grid files
-- Create manifest
-- Test everything locally
+Fetches 7 days of data locally (~5-10 min), then:
+
+```powershell
+cd ..
+git add docs/data/
+git commit -m "data: add initial 7-day weather"
+git push origin main
+```
 
 ## Data Variables Available
 
@@ -80,22 +54,22 @@ From Open-Meteo free API (hourly):
 - **Humidity:** % relative at 2m
 - **Weather Code:** WMO codes (0=sunny, 1-3=cloudy, etc.)
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
-### Pages not deploying?
-- Ensure `website/` folder is selected (not root)
-- Wait 2-3 minutes after enabling
-- Check Actions tab for workflow logs
+### No data on globe?
+- Initial ingest takes 5-10 minutes
+- Check `docs/data/manifest.json` has content
+- Monitor: https://github.com/nethumperera/open-meteo-weather-globe/actions
 
-### Ingest failing?
-- Check `.github/workflows/ingest-openmeteo.yml` in Actions tab
-- Open-Meteo free tier allows ~60 requests/min
-- Jitter prevents blocking; should always succeed
+### Workflow not running?
+- Check Actions tab for errors
+- Verify `.github/workflows/ingest-openmeteo.yml` exists
+- Free tier should never block with jitter enabled
 
-### No data showing?
-- First ingest takes 5-10 minutes (large initial dataset)
-- Subsequent daily updates take 1-2 minutes
-- Check `website/data/manifest.json` exists and has content
+### Data not updating?
+- Runs every hour at :00 UTC + jitter
+- Give it <20 minutes after the hour
+- Check workflow logs for status
 
 ## Repository Information
 

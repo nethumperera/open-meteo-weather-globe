@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open-Meteo Weather Globe - Live Global Weather Visualization</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Map -->
+        <div id="map-container"></div>
+        
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <!-- Header -->
+            <div class="panel-header">
+                <h1>🌍 Weather Globe</h1>
+                <p class="subtitle">Open-Meteo Hourly Data</p>
+            </div>
+            
+            <!-- Status -->
+            <div class="status-row">
+                <span id="status">● Live</span>
+            </div>
+            
+            <!-- Current Time -->
+            <div class="time-info">
+                <div class="time-label">Current Hour</div>
+                <div id="current-hour">Loading...</div>
+                <div class="hour-range">
+                    <span id="time-range">-</span><br>
+                    <small id="hour-count">-</small>
+                </div>
+            </div>
+            
+            <!-- Hour Slider -->
+            <div class="slider-container">
+                <label class="slider-label" for="hour-slider">Time Navigation</label>
+                <input type="range" id="hour-slider" min="0" max="0" value="0">
+            </div>
+            
+            <!-- Hour Selector Dropdown -->
+            <div class="hour-selector">
+                <label class="selector-label" for="hour-selector">Select Hour</label>
+                <select id="hour-selector">
+                    <option>Loading hours...</option>
+                </select>
+            </div>
+            
+            <!-- Playback Controls -->
+            <div class="playback-controls">
+                <button id="btn-prev" title="Previous hour">◀ Prev</button>
+                <button id="btn-play" title="Play hourly animation">▶ Play</button>
+                <button id="btn-pause" title="Pause playback" disabled>⏸ Pause</button>
+                <button id="btn-next" title="Next hour">Next ▶</button>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button id="btn-refresh" title="Refresh data from server">🔄 Refresh</button>
+            </div>
+            
+            <!-- Legend -->
+            <div class="legend">
+                <div class="legend-title">🎨 Visualization</div>
+                
+                <div class="legend-item">
+                    <div class="legend-color wind-color"></div>
+                    <span>Wind Arrows (m/s)</span>
+                </div>
+                
+                <div class="legend-item">
+                    <div class="legend-color rain-color"></div>
+                    <span>Precipitation (mm)</span>
+                </div>
+                
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #2c3e50; font-size: 11px; color: #7f8c8d;">
+                    <p><strong>Data Source:</strong> Open-Meteo Free API</p>
+                    <p style="margin-top: 8px;"><strong>Update:</strong> Daily at 11 AM IST</p>
+                    <p style="margin-top: 8px;"><strong>Coverage:</strong> Global 1° Grid</p>
+                    <p style="margin-top: 8px;"><strong>Window:</strong> 7-day rolling (hourly)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="../assets/js/globe.js"></script>
+</body>
+</html>

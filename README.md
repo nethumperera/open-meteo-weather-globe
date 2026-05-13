@@ -60,10 +60,11 @@ python ingest.py
 
 ### Scheduled Ingest (GitHub Actions)
 
-The workflow runs daily at 11 AM IST with ±10 minute jitter to avoid API blocking:
-- Fetches latest 24 hours of data (hourly)
-- Evicts oldest 24 hours (7-day rolling window)
-- Updates manifest and grid files
+The workflow runs every hour with ±10 minute jitter to avoid API blocking:
+- Fetches latest hour of data from Open-Meteo
+- Maintains 7-day rolling window (168 hours)
+- Auto-deletes oldest hour when window is exceeded
+- Updates manifest and adds new hourly file
 - Commits changes to GitHub Pages
 
 ### Live Globe

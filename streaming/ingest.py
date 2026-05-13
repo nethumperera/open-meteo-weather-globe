@@ -208,15 +208,15 @@ class OpenMeteoIngest:
         
         logger.info(f"Generated manifest with {len(timestamps)} hourly files")
     
-    def daily_update(self) -> bool:
+    def hourly_update(self) -> bool:
         """
-        Daily update: fetch latest 24 hours, delete oldest 24 hours.
-        Called daily at 11 AM IST (with jitter in GitHub Actions).
+        Hourly update: fetch latest hour, delete oldest hour if exceeds 7 days.
+        Called hourly via GitHub Actions (with jitter to avoid API blocking).
         
         Returns:
             True if successful
         """
-        logger.info("Starting daily rolling window update...")
+        logger.info("Starting hourly rolling window update...")
         
         # Load current manifest
         if not Path(self.manifest_path).exists():
@@ -239,19 +239,23 @@ class OpenMeteoIngest:
                 filepath.unlink()
                 logger.info(f"Deleted {filename}")
         
-        # Fetch newest 24 hours (today's date)
-        end_date = datetime.utcnow().date()
-        start_date = end_date
+        # Fetch latest hour (current time)
+        now_utc = datetime.utcnow()
+        current_date = now_utc.date()
+        current_hour = now_utc.hour
         
-        logger.info(f"Fetching new data for {start_date}")
+        logger.info(f"Fetching latest hour: {current_date}T{current_hour:02d}:00 UTC")
         
-        # Similar fetch logic as _ingest_7day_window but for 1 day
+        # Fetch last 2 hours to ensure we get the current hour
+        start_date = current_date
+        end_date = current_date
+        
         grid_data = {}
         grid_points = self.get_grid_points()
         
         for idx, (lat, lon) in enumerate(grid_points):
-            if (idx + 1) % 50 == 0:
-                logger.info(f"Fetching daily data: {idx + 1}/{len(grid_points)} points...")
+            if (idx + 1) % 100 == 0:
+                logger.info(f"Fetching hourly data: {idx + 1}/{len(grid_points)} points...")
             
             data = self.fetch_location_data(lat, lon, 
                                            str(start_date), str(end_date))
@@ -262,48 +266,63 @@ class OpenMeteoIngest:
             hourly = data['hourly']
             times = hourly.get('time', [])
             
-            for time_idx, timestamp in enumerate(times):
-                if timestamp not in grid_data:
-                    grid_data[timestamp] = {}
+            # Only keep the latest timestamp (most recent hour)
+            if times:
+                latest_timestamp = times[-1]
+                latest_idx = len(times) - 1
+                
+                if latest_timestamp not in grid_data:
+                    grid_data[latest_timestamp] = {}
                 
                 for var in self.variables:
                     var_data = hourly.get(var, [])
-                    if time_idx < len(var_data):
-                        value = var_data[time_idx]
+                    if latest_idx < len(var_data):
+                        value = var_data[latest_idx]
                         
-                        if var not in grid_data[timestamp]:
-                            grid_data[timestamp][var] = {}
+                        if var not in grid_data[latest_timestamp]:
+                            grid_data[latest_timestamp][var] = {}
                         
                         lat_str = f"{lat:.1f}"
-                        if lat_str not in grid_data[timestamp][var]:
-                            grid_data[timestamp][var][lat_str] = {}
+                        if lat_str not in grid_data[latest_timestamp][var]:
+                            grid_data[latest_timestamp][var][lat_str] = {}
                         
                         lon_str = f"{lon:.1f}"
-                        grid_data[timestamp][var][lat_str][lon_str] = value
+                        grid_data[latest_timestamp][var][lat_str][lon_str] = value
         
-        # Save new hourly files
+        if not grid_data:
+            logger.warning("No data collected for latest hour")
+            return False
+        
+        # Save new hourly file
         self._save_hourly_grids(grid_data)
         
-        # Update manifest
-        self._generate_manifest({**dict(zip(sorted(grid_data.keys()), 
-                                           [grid_data[k] for k in sorted(grid_data.keys())])), 
-                               **{ts: None for ts in current_files_sorted[24:]}})
+        # Delete oldest file if we exceed 7 days (168 files)
+        existing_files = sorted([f for f in self.output_dir.glob('*.json')])
+        if len(existing_files) > 168:
+            oldest_file = existing_files[0]
+            oldest_file.unlink()
+            logger.info(f"Deleted oldest file: {oldest_file.name} (rolling window limit reached)")
         
-        logger.info("Daily update completed")
+        # Rebuild manifest from current files
+        all_files = sorted([f.stem for f in self.output_dir.glob('*.json')])
+        if all_files:
+            self._generate_manifest({ts: {} for ts in all_files})
+        
+        logger.info(f"Hourly update completed. Total files: {len(all_files)}")
         return True
 
 
 def main():
     """Main entry point."""
     try:
-        # Determine if this is initial 7-day ingest or daily update
-        manifest_path = Path("../website/data/manifest.json")
+        # Determine if this is initial 7-day ingest or hourly update
+        manifest_path = Path("../docs/data/manifest.json")
         
         ingest = OpenMeteoIngest("config.json")
         
         if manifest_path.exists():
-            logger.info("Manifest found, performing daily update")
-            success = ingest.daily_update()
+            logger.info("Manifest found, performing hourly update")
+            success = ingest.hourly_update()
         else:
             logger.info("First run, performing full 7-day ingest")
             success = ingest.ingest_7day_window()
