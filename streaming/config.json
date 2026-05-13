@@ -1,0 +1,45 @@
+{
+  "api": {
+    "base_url": "https://archive-api.open-meteo.com/v1/archive",
+    "free_tier_limits": {
+      "requests_per_minute": 60,
+      "rate_limit_description": "Free tier allows ~60 requests/min for historical data"
+    },
+    "timeout_seconds": 30
+  },
+  "geographic_bounds": {
+    "latitude": {
+      "min": -90,
+      "max": 90
+    },
+    "longitude": {
+      "min": -180,
+      "max": 180
+    },
+    "grid_resolution_degrees": 1.0
+  },
+  "variables": {
+    "hourly": [
+      "temperature_2m",
+      "precipitation",
+      "weather_code",
+      "wind_speed_10m",
+      "wind_direction_10m",
+      "relative_humidity_2m"
+    ]
+  },
+  "data_retention": {
+    "window_days": 7,
+    "hourly_records_per_day": 24,
+    "total_hourly_records": 168,
+    "refresh_time_ist": "11:00",
+    "refresh_time_utc_offset": "+05:30",
+    "jitter_minutes": 10
+  },
+  "output": {
+    "manifest_path": "../website/data/manifest.json",
+    "data_directory": "../website/data/streaming",
+    "format": "json",
+    "grid_type": "regular_1degree"
+  }
+}

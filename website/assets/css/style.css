@@ -1,0 +1,326 @@
+/* Open-Meteo Weather Globe Styling */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  background: #0f1419;
+  color: #ecf0f1;
+}
+
+/* Map container */
+#map-container {
+  flex: 1;
+  position: relative;
+  background: #1a2332;
+}
+
+/* Control panel */
+.control-panel {
+  width: 350px;
+  background: linear-gradient(180deg, #1a1f2e 0%, #16191f 100%);
+  border-left: 1px solid #2c3e50;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+  box-shadow: inset 2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Header */
+.panel-header {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #2c3e50;
+}
+
+.panel-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.panel-header .subtitle {
+  font-size: 12px;
+  color: #95a5a6;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Status indicator */
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 12px;
+  background: rgba(46, 204, 113, 0.1);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+  border-radius: 8px;
+}
+
+#status {
+  font-size: 13px;
+  font-weight: 600;
+  color: #27ae60;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Time display */
+.time-info {
+  background: rgba(52, 152, 219, 0.1);
+  border: 1px solid rgba(52, 152, 219, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+
+.time-label {
+  font-size: 11px;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+#current-hour {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3498db;
+  font-family: 'Courier New', monospace;
+}
+
+.hour-range {
+  font-size: 11px;
+  color: #95a5a6;
+  margin-top: 5px;
+}
+
+#time-range {
+  color: #3498db;
+  font-weight: 500;
+}
+
+#hour-count {
+  color: #95a5a6;
+}
+
+/* Slider */
+.slider-container {
+  margin-bottom: 20px;
+}
+
+.slider-label {
+  font-size: 11px;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 5px;
+  border-radius: 3px;
+  background: #2c3e50;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3498db, #2ecc71);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.4);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3498db, #2ecc71);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.4);
+}
+
+/* Hour selector */
+.hour-selector {
+  margin-bottom: 20px;
+}
+
+.selector-label {
+  font-size: 11px;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+select#hour-selector {
+  width: 100%;
+  padding: 8px;
+  background: #2c3e50;
+  color: #3498db;
+  border: 1px solid #34495e;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+select#hour-selector:hover {
+  border-color: #3498db;
+}
+
+select#hour-selector:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Playback controls */
+.playback-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.playback-controls button {
+  padding: 10px 12px;
+  background: #2c3e50;
+  color: #3498db;
+  border: 1px solid #34495e;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.playback-controls button:hover:not(:disabled) {
+  background: #34495e;
+  border-color: #3498db;
+  color: #2ecc71;
+}
+
+.playback-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+button#btn-refresh {
+  flex: 1;
+  padding: 10px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button#btn-refresh:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+/* Legend */
+.legend {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid #2c3e50;
+}
+
+.legend-title {
+  font-size: 11px;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.wind-color {
+  background: hsl(200, 100%, 40%);
+}
+
+.rain-color {
+  background: hsl(200, 100%, 50%);
+}
+
+/* Leaflet overrides */
+.leaflet-container {
+  font-family: inherit;
+}
+
+.leaflet-control {
+  border: none;
+  background: rgba(26, 35, 50, 0.9) !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(26, 35, 50, 0.8);
+  color: #95a5a6;
+  font-size: 11px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  
+  .control-panel {
+    width: 100%;
+    height: auto;
+    max-height: 40vh;
+    border-left: none;
+    border-top: 1px solid #2c3e50;
+  }
+  
+  #map-container {
+    height: 60vh;
+  }
+}

@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "open-meteo-weather-globe"
+version = "1.0.0"
+description = "Real-time global weather visualization using Open-Meteo free API with hourly 7-day rolling window data"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Weather Globe Project"}
+]
+
+keywords = [
+    "weather",
+    "open-meteo",
+    "visualization",
+    "globe",
+    "meteorology",
+    "climate"
+]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+]
+
+dependencies = [
+    "requests>=2.31.0",
+    "numpy>=1.24.0",
+    "python-dateutil>=2.8.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/nethumperera/open-meteo-weather-globe"
+Documentation = "https://github.com/nethumperera/open-meteo-weather-globe#readme"
+Repository = "https://github.com/nethumperera/open-meteo-weather-globe.git"
+Issues = "https://github.com/nethumperera/open-meteo-weather-globe/issues"
+
+[tool.setuptools]
+packages = ["streaming"]

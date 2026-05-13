@@ -1,0 +1,68 @@
+name: Open-Meteo Hourly Ingest (11 AM IST + Jitter)
+
+on:
+  schedule:
+    # 11 AM IST = 5:30 AM UTC
+    # Run at 5:30 AM UTC every day
+    - cron: '30 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Apply random jitter (avoid API blocking)
+        run: |
+          python3 << 'EOF'
+          import random
+          import time
+          
+          # Random sleep: 0-10 minutes (0-600 seconds)
+          jitter_seconds = random.randint(0, 600)
+          jitter_minutes = jitter_seconds / 60
+          
+          print(f"🕐 Applying {jitter_minutes:.1f} minute jitter to avoid API blocking...")
+          time.sleep(jitter_seconds)
+          print(f"✓ Jitter complete, starting ingest")
+          EOF
+      
+      - name: Install Python dependencies
+        run: |
+          cd streaming
+          pip install --no-cache-dir -r requirements.txt
+      
+      - name: Run Open-Meteo ingest
+        run: |
+          cd streaming
+          python ingest.py
+      
+      - name: Check for changes
+        id: changes
+        run: |
+          git diff --quiet || echo "has_changes=true" >> $GITHUB_OUTPUT
+      
+      - name: Commit and push updates
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git commit -m "chore: update Open-Meteo hourly data $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push origin main
+      
+      - name: Log status
+        run: |
+          echo "✓ Ingest workflow completed"
+          echo "Data manifest: website/data/manifest.json"
+          echo "Latest files in: website/data/streaming/"
