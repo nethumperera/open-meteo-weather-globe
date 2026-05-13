@@ -32,10 +32,10 @@
     "window_days": 7,
     "hourly_records_per_day": 24,
     "total_hourly_records": 168,
-    "refresh_schedule": "Every hour on the hour (UTC)",
-    "refresh_frequency": "Hourly",
+    "refresh_schedule": "Every 6 hours on the hour (UTC)",
+    "refresh_frequency": "Every 6 hours",
     "jitter_minutes": 10,
-    "note": "GitHub Actions runs at :00 minutes every hour with ±10 minute jitter"
+    "note": "GitHub Actions runs at :00 minutes every 6 hours with ±10 minute jitter"
   },
   "output": {
     "manifest_path": "../docs/data/manifest.json",

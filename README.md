@@ -5,7 +5,7 @@ Real-time global weather visualization using Open-Meteo free API with hourly 7-d
 ## Features
 
 - **Real-time Data**: Hourly weather data from Open-Meteo free API
-- **7-Day Rolling Window**: Daily updates at 11 AM IST (with jitter to avoid API blocking)
+- **7-Day Rolling Window**: Updates every 6 hours (with jitter to avoid API blocking)
 - **Live Visualization**: 
   - Real wind arrow vectors (quiver plot)
   - Rain/precipitation heatmap with particle effects
@@ -27,7 +27,7 @@ From Open-Meteo free API (hourly):
 ```
 V2/
 ├── .github/workflows/
-│   └── ingest-openmeteo.yml      # Scheduled ingest workflow (11 AM IST + jitter)
+│   └── ingest-openmeteo.yml      # Scheduled ingest workflow (every 6 hours + jitter)
 ├── streaming/
 │   ├── ingest.py                 # Open-Meteo API client & data processor
 │   ├── config.json               # API config, bounds, variables, retention
@@ -60,16 +60,16 @@ python ingest.py
 
 ### Scheduled Ingest (GitHub Actions)
 
-The workflow runs every hour with ±10 minute jitter to avoid API blocking:
-- Fetches latest hour of data from Open-Meteo
+The workflow runs every 6 hours with ±10 minute jitter to avoid API blocking:
+- Fetches latest 6 hours of data from Open-Meteo
 - Maintains 7-day rolling window (168 hours)
-- Auto-deletes oldest hour when window is exceeded
-- Updates manifest and adds new hourly file
+- Auto-deletes oldest hours when window is exceeded
+- Updates manifest and adds new hourly files
 - Commits changes to GitHub Pages
 
 ### Live Globe
 
-Visit `website/pages/globe.html` after deployment to GitHub Pages.
+Visit `docs/pages/globe.html` after deployment to GitHub Pages.
 
 ## Configuration
 

@@ -25,8 +25,8 @@ This repository is configured to serve from the `website/` folder via GitHub Pag
 ## Automated Updates
 
 GitHub Actions workflow (`.github/workflows/ingest-openmeteo.yml`):
-- **Schedule:** Daily at 11 AM IST (5:30 AM UTC) with ±10 minute jitter
-- **Action:** Fetches latest 24 hours from Open-Meteo API
+- **Schedule:** Every 6 hours at :00 UTC with ±10 minute jitter
+- **Action:** Fetches latest 6 hours from Open-Meteo API
 - **Storage:** Updates `website/data/streaming/` directory
 - **Deployment:** Auto-commits to `main` branch → Pages redeploys
 

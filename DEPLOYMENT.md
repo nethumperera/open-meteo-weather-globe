@@ -7,27 +7,27 @@ Your site is live and running!
 - **Home:** https://nethumperera.github.io/open-meteo-weather-globe/
 - **Globe:** https://nethumperera.github.io/open-meteo-weather-globe/pages/globe.html
 
-## ⏰ Automated Hourly Updates
+## ⏰ Automated 6-Hour Updates
 
-GitHub Actions workflow **runs every hour automatically**:
+GitHub Actions workflow **runs every 6 hours automatically**:
 
-**Schedule:** Every hour at :00 UTC with ±10 minute random jitter
+**Schedule:** Every 6 hours at :00 UTC with ±10 minute random jitter
 
 **What it does:**
-1. Activates hourly
+1. Activates every 6 hours
 2. Applies random 0-10 minute delay (prevents API blocking)
-3. Fetches latest hour of weather from Open-Meteo API
-4. Processes data into hourly grid file (~1° global resolution)
+3. Fetches latest 6 hours of weather from Open-Meteo API
+4. Processes data into hourly grid files (~1° global resolution)
 5. Updates `docs/data/manifest.json`
 6. Auto-commits to GitHub → Pages redeploys
 
-**Result:** Fresh weather data every hour, 24/7! 🌍
+**Result:** Fresh weather data every 6 hours, 24/7! 🌍
 
 ## 📊 Data Retention
 
 - **7-day rolling window:** Always 168 hours (7 days)
-- **Hourly updates:** One new hour each hour
-- **Auto-cleanup:** Oldest hour deleted when exceeding 168 files
+- **6-hour updates:** New batch every 6 hours
+- **Auto-cleanup:** Oldest hours deleted when exceeding 168 files
 
 ## 🧪 Manual Testing (Optional)
 
@@ -67,8 +67,8 @@ From Open-Meteo free API (hourly):
 - Free tier should never block with jitter enabled
 
 ### Data not updating?
-- Runs every hour at :00 UTC + jitter
-- Give it <20 minutes after the hour
+- Runs every 6 hours at :00 UTC + jitter
+- Give it <20 minutes after the scheduled run
 - Check workflow logs for status
 
 ## Repository Information
@@ -78,7 +78,7 @@ From Open-Meteo free API (hourly):
 - **Architecture:** Client-side Leaflet globe, server-side data automation
 - **License:** MIT
 - **Deployment:** GitHub Pages + GitHub Actions
-- **Update Frequency:** Daily at 11 AM IST
+- **Update Frequency:** Every 6 hours
 
 ## Next Steps
 
