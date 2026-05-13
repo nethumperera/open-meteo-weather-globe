@@ -15,6 +15,7 @@ class WeatherGlobe {
     this.currentHourData = null;
     this.currentHourIndex = 0;
     this.isPlaying = false;
+    this.currentRegion = 'asia';
     
     // Canvas layers for visualization
     this.windArrowLayer = null;
@@ -32,6 +33,19 @@ class WeatherGlobe {
       rainHeatmapOpacity: 0.6,
       rainParticleCount: 200,
       playbackSpeed: 500, // ms per frame
+    };
+
+    this.regionPresets = {
+      asia: {
+        center: [35, 100],
+        zoom: 3,
+        bounds: [[5, 25], [80, 180]]
+      },
+      world: {
+        center: [20, 0],
+        zoom: 2,
+        bounds: null
+      }
     };
     
     this.initialize();
@@ -65,8 +79,8 @@ class WeatherGlobe {
   initializeMap() {
     // Create map centered on equator
     this.map = L.map('map-container', {
-      center: [20, 0],
-      zoom: 3,
+      center: this.regionPresets.asia.center,
+      zoom: this.regionPresets.asia.zoom,
       preferCanvas: true,
       maxZoom: 6,
       minZoom: 2,
@@ -93,6 +107,8 @@ class WeatherGlobe {
     this.map.addLayer(this.windArrowLayer);
     this.map.addLayer(this.rainHeatmapLayer);
     this.map.addLayer(this.rainParticleLayer);
+
+    this.setMapRegion('asia');
     
     console.log('✓ Map initialized');
   }
@@ -374,6 +390,8 @@ class WeatherGlobe {
   }
   
   setupControls() {
+    this.setupRegionControls();
+
     // Hour slider
     const slider = document.getElementById('hour-slider');
     if (this.manifest) {
@@ -401,6 +419,42 @@ class WeatherGlobe {
         this.showError(`Refresh failed: ${error.message}`);
       }
     });
+  }
+
+  setupRegionControls() {
+    const asiaButton = document.getElementById('btn-region-asia');
+    const worldButton = document.getElementById('btn-region-world');
+
+    if (asiaButton) {
+      asiaButton.addEventListener('click', () => this.setMapRegion('asia'));
+    }
+
+    if (worldButton) {
+      worldButton.addEventListener('click', () => this.setMapRegion('world'));
+    }
+
+    this.updateRegionButtons();
+  }
+
+  setMapRegion(regionName) {
+    const region = this.regionPresets[regionName] || this.regionPresets.asia;
+    this.currentRegion = regionName in this.regionPresets ? regionName : 'asia';
+
+    if (region.bounds) {
+      this.map.fitBounds(region.bounds, { padding: [20, 20] });
+    } else {
+      this.map.setView(region.center, region.zoom);
+    }
+
+    this.updateRegionButtons();
+  }
+
+  updateRegionButtons() {
+    const asiaButton = document.getElementById('btn-region-asia');
+    const worldButton = document.getElementById('btn-region-world');
+
+    if (asiaButton) asiaButton.disabled = this.currentRegion === 'asia';
+    if (worldButton) worldButton.disabled = this.currentRegion === 'world';
   }
   
   startPlayback() {

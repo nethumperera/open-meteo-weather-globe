@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open-Meteo Weather Globe - Live Global Weather Visualization</title>
+    <title>Open-Meteo Weather Globe - Asia Grid + World Map Toggle</title>
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
@@ -65,6 +65,15 @@
             <div class="action-buttons">
                 <button id="btn-refresh" title="Refresh data from server">🔄 Refresh</button>
             </div>
+
+            <!-- Map View -->
+            <div class="hour-selector">
+                <label class="selector-label">Map View</label>
+                <div class="playback-controls" style="margin-bottom: 0;">
+                    <button id="btn-region-asia" title="Focus on Asia">Asia</button>
+                    <button id="btn-region-world" title="Show world map">World</button>
+                </div>
+            </div>
             
             <!-- Legend -->
             <div class="legend">
@@ -83,7 +92,8 @@
                 <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #2c3e50; font-size: 11px; color: #7f8c8d;">
                     <p><strong>Data Source:</strong> Open-Meteo Free API</p>
                     <p style="margin-top: 8px;"><strong>Update:</strong> Every 6 hours</p>
-                    <p style="margin-top: 8px;"><strong>Coverage:</strong> Global 1° Grid</p>
+                    <p style="margin-top: 8px;"><strong>Coverage:</strong> Asia 5° Grid</p>
+                    <p style="margin-top: 8px;"><strong>View:</strong> Asia + World Map Toggle</p>
                     <p style="margin-top: 8px;"><strong>Window:</strong> 7-day rolling (hourly)</p>
                 </div>
             </div>

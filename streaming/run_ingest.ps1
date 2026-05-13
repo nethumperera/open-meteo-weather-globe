@@ -19,9 +19,9 @@ python ingest.py
 
 # Check results
 if ($LASTEXITCODE -eq 0) {
-    Write-Host "✓ Ingest completed. Check ../website/data/manifest.json" -ForegroundColor Green
+    Write-Host "[SUCCESS] Ingest completed. Check ../docs/data/manifest.json" -ForegroundColor Green
 } else {
-    Write-Host "✗ Ingest failed" -ForegroundColor Red
+    Write-Host "[FAILED] Ingest failed" -ForegroundColor Red
 }
 
 Pop-Location

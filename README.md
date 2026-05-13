@@ -1,11 +1,11 @@
 # Open-Meteo Weather Visualization (V2)
 
-Real-time global weather visualization using Open-Meteo free API with hourly 7-day rolling window data.
+Real-time Asia-focused weather visualization using Open-Meteo free API with hourly 7-day rolling window data.
 
 ## Features
 
 - **Real-time Data**: Hourly weather data from Open-Meteo free API
-- **7-Day Rolling Window**: Updates every 6 hours (with jitter to avoid API blocking)
+- **7-Day Rolling Window**: Asia coverage at 5° resolution, updated every 6 hours
 - **Live Visualization**: 
   - Real wind arrow vectors (quiver plot)
   - Rain/precipitation heatmap with particle effects
@@ -74,7 +74,7 @@ Visit `docs/pages/globe.html` after deployment to GitHub Pages.
 ## Configuration
 
 Edit `streaming/config.json` to customize:
-- Geographic bounds (latitude/longitude)
+- Geographic bounds for the Asia grid (latitude/longitude)
 - API endpoint and free tier rate limits
 - Data retention (7 days × 24 hours)
 - Variable selection (precipitation, temperature, wind, etc.)

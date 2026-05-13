@@ -17,7 +17,7 @@ GitHub Actions workflow **runs every 6 hours automatically**:
 1. Activates every 6 hours
 2. Applies random 0-10 minute delay (prevents API blocking)
 3. Fetches latest 6 hours of weather from Open-Meteo API
-4. Processes data into hourly grid files (~1° global resolution)
+4. Processes data into hourly grid files (~5° Asia coverage)
 5. Updates `docs/data/manifest.json`
 6. Auto-commits to GitHub → Pages redeploys
 

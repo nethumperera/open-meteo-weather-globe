@@ -6,7 +6,7 @@ Fetches hourly weather data from Open-Meteo free API (archive endpoint) and main
 a 7-day rolling window of gridded data. Refreshes every 6 hours with jitter.
 
 Data Flow:
-1. Fetch last 7 days of hourly data for global 1° grid
+1. Fetch last 7 days of hourly data for Asia 5° grid
 2. Post-process to JSON grid files per variable per hour
 3. Generate manifest index
 4. Commit to GitHub Pages
@@ -49,7 +49,7 @@ class OpenMeteoIngest:
         
     def get_grid_points(self) -> List[Tuple[float, float]]:
         """
-        Generate 1-degree global grid points (lat, lon).
+        Generate 5-degree Asia grid points (lat, lon).
         Returns list of (latitude, longitude) tuples.
         """
         lat_min = self.config['geographic_bounds']['latitude']['min']
@@ -61,7 +61,7 @@ class OpenMeteoIngest:
         lons = np.arange(lon_min, lon_max + self.grid_res, self.grid_res)
         
         points = [(lat, lon) for lat in lats for lon in lons]
-        logger.info(f"Generated {len(points)} grid points at {self.grid_res}° resolution")
+        logger.info(f"Generated {len(points)} grid points for Asia at {self.grid_res}° resolution")
         return points
     
     def fetch_location_data(self, latitude: float, longitude: float, 
@@ -96,12 +96,12 @@ class OpenMeteoIngest:
     
     def ingest_7day_window(self) -> bool:
         """
-        Fetch last 7 days of hourly data, post-process, and save to grid files.
+        Fetch last 7 days of hourly data, post-process, and save to Asia grid files.
         
         Returns:
             True if successful
         """
-        logger.info("Starting 7-day rolling window ingest...")
+        logger.info("Starting 7-day rolling window ingest for Asia...")
         
         # Date range: last 7 days
         end_date = datetime.utcnow().date()

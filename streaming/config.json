@@ -9,14 +9,15 @@
   },
   "geographic_bounds": {
     "latitude": {
-      "min": -90,
-      "max": 90
+      "min": 5,
+      "max": 80
     },
     "longitude": {
-      "min": -180,
+      "min": 25,
       "max": 180
     },
-    "grid_resolution_degrees": 1.0
+    "grid_resolution_degrees": 5.0,
+    "region_name": "asia"
   },
   "variables": {
     "hourly": [
@@ -41,6 +42,6 @@
     "manifest_path": "../docs/data/manifest.json",
     "data_directory": "../docs/data/streaming",
     "format": "json",
-    "grid_type": "regular_1degree"
+    "grid_type": "regular_5degree_asia"
   }
 }
